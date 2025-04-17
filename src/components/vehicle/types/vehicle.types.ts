@@ -55,4 +55,29 @@ interface VehicleResponse {
   age?: number;
 }
 
-export type { VehicleResponse };
+interface VehicleCreatePayload {
+  registrationNumber: string;
+  vin: string;
+  make: string;
+  vehicleModel: string;
+  year: number;
+  type: VehicleType;
+  color?: string;
+  fuelType: FuelType;
+  engineCapacityCC?: number;
+  transmission?: TransmissionType;
+  status: VehicleStatus;
+  purchaseDate?: Date;
+  purchasePrice?: number;
+  insurance?: Insurance;
+  gpsDeviceId?: string;
+  currentLocation?: GeoPoint;
+  notes?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+
+  // Virtual
+  age?: number;
+}
+
+export type { VehicleResponse, VehicleCreatePayload };

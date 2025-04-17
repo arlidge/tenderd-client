@@ -17,9 +17,7 @@ interface VehiclesData {
 }
 
 interface ApiResponse {
-  data: {
-    data: VehiclesData;
-  };
+  data: VehiclesData;
 }
 
 interface useListVehiclesParams {
@@ -34,7 +32,7 @@ const fetchVehicles = async ({
   const response = await apiClient.get<ApiResponse>("v1/vehicle", {
     params: { page, limit },
   });
-  return response.data.data;
+  return response.data;
 };
 
 export const useListVehicles = (params: useListVehiclesParams = {}) => {
