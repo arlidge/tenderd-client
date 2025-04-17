@@ -2,6 +2,10 @@ import { createBrowserRouter } from "react-router-dom";
 import { HomeOutlined, CarOutlined } from "@ant-design/icons";
 import MainLayout from "../components/layout/MainLayout";
 import VehicleContainer from "../components/vehicle/vehicle.container";
+import VehicleCreate from "../components/vehicle/vehicle-create";
+import VehicleDetails from "../components/vehicle/vehicle-details";
+import VehicleUpdate from "../components/vehicle/vehicle-update";
+import VehicleTable from "../components/vehicle/vehicle-table";
 
 const menuItems = [
   {
@@ -53,8 +57,26 @@ const routes = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/vehicles",
+        path: "vehicles",
         element: <VehicleContainer />,
+        children: [
+          {
+            index: true,
+            element: <VehicleTable pageSize={10} />,
+          },
+          {
+            path: "create",
+            element: <VehicleCreate />,
+          },
+          {
+            path: ":id",
+            element: <VehicleDetails />,
+          },
+          {
+            path: ":id/update",
+            element: <VehicleUpdate />,
+          },
+        ],
       },
     ],
   },

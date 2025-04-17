@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Tag, Button, Space } from "antd";
-import { EyeOutlined, EditOutlined } from "@ant-design/icons";
+import { EyeOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useListVehicles } from "./hooks/use-list-vehicles";
 import { VehicleResponse } from "./types/vehicle.types";
 import PaginatedTable, { ColumnConfig } from "../common/paginated-table";
@@ -8,21 +9,20 @@ import PaginatedTable, { ColumnConfig } from "../common/paginated-table";
 interface VehicleTableProps {
   pageSize?: number;
   className?: string;
-  onViewDetails?: (id: string) => void;
-  onEditVehicle?: (id: string) => void;
 }
 
 const VehicleTable: React.FC<VehicleTableProps> = ({
   pageSize = 10,
   className,
-  onViewDetails,
-  onEditVehicle,
 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = parseInt(searchParams.get("page") || "1", 10);
+  const limit = parseInt(searchParams.get("limit") || pageSize.toString(), 10);
 
   const { data, isLoading, error } = useListVehicles({
     page: currentPage,
-    limit: pageSize,
+    limit,
   });
 
   const columns = useMemo<ColumnConfig<VehicleResponse>[]>(
@@ -79,39 +79,30 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
         ],
         onFilter: (value, record) => record.status === value,
       },
-      // Only add the actions column if we have handlers
-      ...(onViewDetails || onEditVehicle
-        ? [
-            {
-              title: "Actions",
-              key: "actions",
-              render: (_: any, record: VehicleResponse) => (
-                <Space size="small">
-                  {onViewDetails && (
-                    <Button
-                      icon={<EyeOutlined />}
-                      size="small"
-                      onClick={() => onViewDetails(record.id)}
-                    >
-                      View
-                    </Button>
-                  )}
-                  {onEditVehicle && (
-                    <Button
-                      icon={<EditOutlined />}
-                      size="small"
-                      onClick={() => onEditVehicle(record.id)}
-                    >
-                      Edit
-                    </Button>
-                  )}
-                </Space>
-              ),
-            },
-          ]
-        : []),
+      {
+        title: "Actions",
+        key: "actions",
+        render: (_: any, record: VehicleResponse) => (
+          <Space size="small">
+            <Button
+              icon={<EyeOutlined />}
+              size="small"
+              onClick={() => navigate(`/vehicles/${record.id}`)}
+            >
+              View
+            </Button>
+            <Button
+              icon={<EditOutlined />}
+              size="small"
+              onClick={() => navigate(`/vehicles/${record.id}/update`)}
+            >
+              Edit
+            </Button>
+          </Space>
+        ),
+      },
     ],
-    [onViewDetails, onEditVehicle]
+    [navigate]
   );
 
   // Transform data for the table
@@ -126,7 +117,7 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
 
   // Handle pagination change
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    setSearchParams({ page: page.toString(), limit: limit.toString() });
   };
 
   if (error) {
@@ -134,15 +125,28 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
   }
 
   return (
-    <PaginatedTable<VehicleResponse>
-      data={tableData}
-      columns={columns}
-      loading={isLoading}
-      pagination={data}
-      onPageChange={handlePageChange}
-      rowKey="key"
-      className={className}
-    />
+    <div>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Fleet Vehicles</h1>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => navigate("/vehicles/create")}
+        >
+          Create Vehicle
+        </Button>
+      </div>
+
+      <PaginatedTable<VehicleResponse>
+        data={tableData}
+        columns={columns}
+        loading={isLoading}
+        pagination={data}
+        onPageChange={handlePageChange}
+        rowKey="key"
+        className={className}
+      />
+    </div>
   );
 };
 

@@ -14,17 +14,14 @@ import { toast } from "react-toastify";
 import { VehicleCreatePayload } from "./types/vehicle.types";
 import { useCreateVehicle } from "./hooks/use-create-vehicle";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 const { Item } = Form;
 const { Option } = Select;
 const { TextArea } = Input;
 
-interface VehicleCreateProps {
-  onCancel?: () => void;
-}
-
-const VehicleCreate: React.FC<VehicleCreateProps> = ({ onCancel }) => {
+const VehicleCreate: React.FC = () => {
   const navigate = useNavigate();
   const { mutate: createVehicle, isPending } = useCreateVehicle();
 
@@ -46,11 +43,7 @@ const VehicleCreate: React.FC<VehicleCreateProps> = ({ onCancel }) => {
     createVehicle(data, {
       onSuccess: () => {
         toast.success("Vehicle created successfully");
-        if (onCancel) {
-          onCancel();
-        } else {
-          navigate("/vehicles");
-        }
+        navigate("/vehicles");
       },
       onError: (error: any) => {
         toast.error(`Failed to create vehicle: ${error.message}`);
@@ -60,6 +53,16 @@ const VehicleCreate: React.FC<VehicleCreateProps> = ({ onCancel }) => {
 
   return (
     <div>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Create New Vehicle</h1>
+        <Button
+          icon={<ArrowLeftOutlined />}
+          onClick={() => navigate("/vehicles")}
+        >
+          Back to List
+        </Button>
+      </div>
+
       <Card>
         <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -377,9 +380,7 @@ const VehicleCreate: React.FC<VehicleCreateProps> = ({ onCancel }) => {
           </div>
 
           <div className="flex justify-end mt-6 gap-4">
-            <Button onClick={onCancel || (() => navigate("/vehicles"))}>
-              Cancel
-            </Button>
+            <Button onClick={() => navigate("/vehicles")}>Cancel</Button>
             <Button type="primary" htmlType="submit" loading={isPending}>
               Create Vehicle
             </Button>
