@@ -2,8 +2,8 @@ import React, { useMemo, useState } from "react";
 import { Tag, Button, Space } from "antd";
 import { EyeOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useListVehicles } from "./hooks/use-list-vehicles";
-import { VehicleResponse } from "./types/vehicle.types";
+import { useListVehicles } from "./hooks/use-list-vehicle";
+import { Vehicle } from "./types/vehicle.types";
 import PaginatedTable, { ColumnConfig } from "../common/paginated-table";
 
 interface VehicleTableProps {
@@ -25,7 +25,7 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
     limit,
   });
 
-  const columns = useMemo<ColumnConfig<VehicleResponse>[]>(
+  const columns = useMemo<ColumnConfig<Vehicle>[]>(
     () => [
       {
         title: "Registration Number",
@@ -82,7 +82,7 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
       {
         title: "Actions",
         key: "actions",
-        render: (_: any, record: VehicleResponse) => (
+        render: (_: any, record: Vehicle) => (
           <Space size="small">
             <Button
               icon={<EyeOutlined />}
@@ -137,7 +137,7 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
         </Button>
       </div>
 
-      <PaginatedTable<VehicleResponse>
+      <PaginatedTable<Vehicle>
         data={tableData}
         columns={columns}
         loading={isLoading}

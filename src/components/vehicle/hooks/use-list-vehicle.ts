@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { VehicleResponse } from "../types/vehicle.types";
+import { Vehicle } from "../types/vehicle.types";
 import { apiClient } from "../../../services/axios.service";
 
 interface VehiclesData {
-  docs: VehicleResponse[];
+  docs: Vehicle[];
   totalDocs: number;
   limit: number;
   totalPages: number;

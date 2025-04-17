@@ -25,34 +25,28 @@ interface Insurance {
   premium?: number;
 }
 
-interface VehicleResponse {
+interface Vehicle {
   id: string;
   registrationNumber: string;
   vin: string;
   make: string;
   vehicleModel: string;
   year: number;
-  type: VehicleType;
-  color?: string;
-  fuelType: FuelType;
-  engineCapacityCC?: number;
-  transmission?: TransmissionType;
-  status: VehicleStatus;
+  type: string;
+  color: string;
+  fuelType: string;
+  engineCapacityCC: number;
+  transmission: string;
+  status: string;
   currentOdometerKm: number;
-  fuelEfficiencyKm?: number;
-  purchaseDate?: Date;
-  purchasePrice?: number;
-  lastMaintenanceDate?: Date;
-  nextMaintenanceDate?: Date;
-  insurance?: Insurance;
-  gpsDeviceId?: string;
-  currentLocation?: GeoPoint;
-  notes?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-
-  // Virtual
-  age?: number;
+  purchaseDate: string;
+  purchasePrice: number;
+  insurance: Insurance;
+  gpsDeviceId: string;
+  currentLocation: GeoPoint;
+  notes: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface VehicleCreatePayload {
@@ -80,4 +74,4 @@ interface VehicleCreatePayload {
   age?: number;
 }
 
-export type { VehicleResponse, VehicleCreatePayload };
+export type { VehicleCreatePayload, Vehicle };
