@@ -19,8 +19,10 @@
     "jotai": "^2.12.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.55.0",
     "react-router-dom": "^7.1.1",
     "react-scripts": "5.0.1",
+    "react-toastify": "^11.0.5",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
   },

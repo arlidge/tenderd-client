@@ -365,40 +365,6 @@ const VehicleCreate: React.FC<VehicleCreateProps> = ({ onCancel }) => {
               />
             </Item>
 
-            <Item label="Longitude">
-              <Controller
-                name="currentLocation.coordinates.0"
-                control={control}
-                render={({ field }) => (
-                  <InputNumber
-                    {...field}
-                    className="w-full"
-                    min={-180}
-                    max={180}
-                    step={0.000001}
-                    onChange={(value) => field.onChange(value)}
-                  />
-                )}
-              />
-            </Item>
-
-            <Item label="Latitude">
-              <Controller
-                name="currentLocation.coordinates.1"
-                control={control}
-                render={({ field }) => (
-                  <InputNumber
-                    {...field}
-                    className="w-full"
-                    min={-90}
-                    max={90}
-                    step={0.000001}
-                    onChange={(value) => field.onChange(value)}
-                  />
-                )}
-              />
-            </Item>
-
             <div className="md:col-span-2">
               <Item label="Notes">
                 <Controller

@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
-import { Tag } from "antd";
+import { Tag, Button, Space } from "antd";
+import { EyeOutlined, EditOutlined } from "@ant-design/icons";
 import { useListVehicles } from "./hooks/use-list-vehicles";
 import { VehicleResponse } from "./types/vehicle.types";
 import PaginatedTable, { ColumnConfig } from "../common/paginated-table";
@@ -7,11 +8,15 @@ import PaginatedTable, { ColumnConfig } from "../common/paginated-table";
 interface VehicleTableProps {
   pageSize?: number;
   className?: string;
+  onViewDetails?: (id: string) => void;
+  onEditVehicle?: (id: string) => void;
 }
 
 const VehicleTable: React.FC<VehicleTableProps> = ({
   pageSize = 10,
   className,
+  onViewDetails,
+  onEditVehicle,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -74,8 +79,39 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
         ],
         onFilter: (value, record) => record.status === value,
       },
+      // Only add the actions column if we have handlers
+      ...(onViewDetails || onEditVehicle
+        ? [
+            {
+              title: "Actions",
+              key: "actions",
+              render: (_: any, record: VehicleResponse) => (
+                <Space size="small">
+                  {onViewDetails && (
+                    <Button
+                      icon={<EyeOutlined />}
+                      size="small"
+                      onClick={() => onViewDetails(record.id)}
+                    >
+                      View
+                    </Button>
+                  )}
+                  {onEditVehicle && (
+                    <Button
+                      icon={<EditOutlined />}
+                      size="small"
+                      onClick={() => onEditVehicle(record.id)}
+                    >
+                      Edit
+                    </Button>
+                  )}
+                </Space>
+              ),
+            },
+          ]
+        : []),
     ],
-    []
+    [onViewDetails, onEditVehicle]
   );
 
   // Transform data for the table
