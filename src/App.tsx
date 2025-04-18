@@ -1,10 +1,16 @@
-import { RouterProvider } from 'react-router-dom';
-import { ConfigProvider, theme as antTheme } from 'antd';
-import { Provider, useAtom } from 'jotai';
-import './App.css';
-import routes from './routes/route';
-import { themeAtom } from './states/theme.atom';
-import { darkTokens, lightTokens, darkTokensLayout, lightTokensLayout } from './theme/theme';
+import { RouterProvider } from "react-router-dom";
+import { ConfigProvider, theme as antTheme } from "antd";
+import { Provider, useAtom } from "jotai";
+import "./App.css";
+import routes from "./routes/route";
+import { themeAtom } from "./states/theme.atom";
+import {
+  darkTokens,
+  lightTokens,
+  darkTokensLayout,
+  lightTokensLayout,
+} from "./theme/theme";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const AppContent = () => {
   const [theme] = useAtom(themeAtom);
@@ -12,18 +18,19 @@ const AppContent = () => {
   return (
     <ConfigProvider
       theme={{
-        algorithm: theme === 'dark' ? antTheme.darkAlgorithm : antTheme.defaultAlgorithm,
-        token: theme === 'dark' ? darkTokens : lightTokens,
+        algorithm:
+          theme === "dark" ? antTheme.darkAlgorithm : antTheme.defaultAlgorithm,
+        token: theme === "dark" ? darkTokens : lightTokens,
         components: {
           Layout: {
-            ...(theme === 'dark' ? darkTokensLayout : lightTokensLayout),
+            ...(theme === "dark" ? darkTokensLayout : lightTokensLayout),
           },
         },
       }}
     >
-      <div>
+      <ErrorBoundary>
         <RouterProvider router={routes} />
-      </div>
+      </ErrorBoundary>
     </ConfigProvider>
   );
 };
@@ -32,7 +39,9 @@ const AppContent = () => {
 function App() {
   return (
     <Provider>
-      <AppContent />
+      <ErrorBoundary>
+        <AppContent />
+      </ErrorBoundary>
     </Provider>
   );
 }
