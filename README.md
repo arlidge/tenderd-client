@@ -35,6 +35,8 @@ Real time react app
 <img width="2056" alt="image" src="https://github.com/user-attachments/assets/43e9dcb6-0352-44e7-a382-df3cdfaad049" />
 
 ### Vehicle Details When Moving (Socket/Sensor Connected)
+<img width="2056" alt="image" src="https://github.com/user-attachments/assets/d6df8d6e-1c78-43ed-8189-0062a8412faf" />
+
 <img width="2056" alt="image" src="https://github.com/user-attachments/assets/050762f3-ac9a-4e5f-9454-d88f4cd31ee0" />
 
 ### Vehicle Maintenance Records
