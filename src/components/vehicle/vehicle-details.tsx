@@ -577,15 +577,6 @@ const VehicleDetails: React.FC = () => {
             </Col>
           </Row>
 
-          {vehicle.notes && (
-            <>
-              <Divider />
-              <h3 className="text-lg font-semibold mb-2">Notes</h3>
-              <p>{vehicle.notes}</p>
-            </>
-          )}
-
-          {/* Add maintenance records section before the system information */}
           <Divider />
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h3 className="mb-0">Maintenance Records</h3>
@@ -611,6 +602,14 @@ const VehicleDetails: React.FC = () => {
             />
           ) : (
             <Empty description="No maintenance records found" />
+          )}
+
+          {vehicle.notes && (
+            <>
+              <Divider />
+              <h3 className="text-lg font-semibold mb-2">Notes</h3>
+              <p>{vehicle.notes}</p>
+            </>
           )}
 
           <Divider />
