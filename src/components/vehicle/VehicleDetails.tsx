@@ -436,7 +436,7 @@ const VehicleDetails: React.FC = () => {
                 </span>
               )}
               {connected && (
-                <>
+                <div className="d-flex items-center">
                   {currentIgnitionStatus !== null ? (
                     currentIgnitionStatus ? (
                       <Tag
@@ -462,13 +462,13 @@ const VehicleDetails: React.FC = () => {
                     <Tooltip
                       title={`Last updated: ${lastUpdated.toLocaleString()}`}
                     >
-                      <div className="flex items-center ml-3 text-gray-500 pt-md-2">
+                      <div className="flex items-center ml-3 text-gray-500">
                         <ClockCircleOutlined className="mr-1" />
                         <span>&nbsp;{getRelativeTime()}</span>
                       </div>
                     </Tooltip>
                   )}
-                </>
+                </div>
               )}
             </div>
           </Row>
