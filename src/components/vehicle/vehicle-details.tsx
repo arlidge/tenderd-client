@@ -14,10 +14,9 @@ import {
 import {
   ArrowLeftOutlined,
   EditOutlined,
-  DashboardOutlined,
+  ContainerOutlined,
   ClockCircleOutlined,
   ReloadOutlined,
-  InfoCircleOutlined,
 } from "@ant-design/icons";
 import { useParams, useNavigate } from "react-router-dom";
 import { useGetVehicle } from "./hooks/use-get-vehicle";
@@ -298,7 +297,7 @@ const VehicleDetails: React.FC = () => {
       <div className="row">
         <Header
           headerText="Vehicle Details"
-          headerIcon={<InfoCircleOutlined />}
+          headerIcon={<ContainerOutlined />}
         />
       </div>
       <div className="d-flex justify-content-end mb-4">

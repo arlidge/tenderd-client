@@ -1,10 +1,16 @@
 import React, { useMemo, useState } from "react";
 import { Tag, Button, Space } from "antd";
-import { EyeOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  EyeOutlined,
+  EditOutlined,
+  PlusOutlined,
+  CarOutlined,
+} from "@ant-design/icons";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useListVehicles } from "./hooks/use-list-vehicle";
 import { Vehicle } from "./types/vehicle.types";
 import PaginatedTable, { ColumnConfig } from "../common/paginated-table";
+import Header from "../layout/Header";
 
 interface VehicleTableProps {
   pageSize?: number;
@@ -126,8 +132,8 @@ const VehicleTable: React.FC<VehicleTableProps> = ({
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Fleet Vehicles</h1>
+      <Header headerText="Fleet Vehicles" headerIcon={<CarOutlined />} />
+      <div className="d-flex justify-content-end mb-4">
         <Button
           type="primary"
           icon={<PlusOutlined />}

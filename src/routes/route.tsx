@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { HomeOutlined, CarOutlined } from "@ant-design/icons";
+import { AppLogo } from "../components/layout/Logo";
 import MainLayout from "../components/layout/MainLayout";
 import VehicleContainer from "../components/vehicle/vehicle.container";
 import VehicleCreate from "../components/vehicle/vehicle-create";
@@ -21,8 +22,6 @@ const menuItems = [
     icon: <CarOutlined />,
   },
 ];
-
-const AppLogo = () => <h2 className={"px-3 py-2"}>Tenderd</h2>;
 
 const HomePage = () => (
   <div>

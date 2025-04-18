@@ -14,7 +14,8 @@ import { toast } from "react-toastify";
 import { VehicleCreatePayload } from "./types/vehicle.types";
 import { useCreateVehicle } from "./hooks/use-create-vehicle";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, PlusOutlined } from "@ant-design/icons";
+import Header from "../layout/Header";
 
 const { Title } = Typography;
 const { Item } = Form;
@@ -53,8 +54,8 @@ const VehicleCreate: React.FC = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Create New Vehicle</h1>
+      <Header headerText="Create New Vehicle" headerIcon={<PlusOutlined />} />
+      <div className="d-flex justify-content-end mb-4">
         <Button
           icon={<ArrowLeftOutlined />}
           onClick={() => navigate("/vehicles")}
