@@ -260,13 +260,13 @@ const VehicleDetails: React.FC = () => {
   const getStatusBadge = () => {
     switch (connectionStatus) {
       case "connected":
-        return { status: "success", text: "Live" };
+        return { status: "green", text: "Vehicle Connected" };
       case "connecting":
-        return { status: "processing", text: "Connecting" };
+        return { status: "blue", text: "Vehicle Connecting" };
       case "disconnected":
-        return { status: "error", text: "Disconnected" };
+        return { status: "magenta", text: "Vehicle Disconnected" };
       default:
-        return { status: "default", text: "Unknown" };
+        return { status: "volcano", text: "Vehicle Connection Unknown" };
     }
   };
 
@@ -319,167 +319,170 @@ const VehicleDetails: React.FC = () => {
         </div>
       </div>
 
-      <Card>
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">Vehicle Identification</h3>
-          <div className="flex items-center">
-            <Badge
-              status={statusBadge.status as any}
-              text={statusBadge.text}
-              className="mr-4"
-            />
-            {connectionStatus === "disconnected" && (
-              <Button
-                type="dashed"
-                icon={<ReloadOutlined />}
-                size="small"
-                onClick={handleManualReconnect}
-                loading={reconnecting}
-                className="mr-4"
-                disabled={reconnecting}
-              >
-                Reconnect
-              </Button>
-            )}
-            {connectionError && (
-              <span className="text-red-500 mr-4 text-sm">
-                {connectionError}
-              </span>
-            )}
-            {connected && (
-              <>
-                <DashboardOutlined className="mr-2" />
-                <span className="mr-2">Status:</span>
-                {currentIgnitionStatus !== null ? (
-                  currentIgnitionStatus ? (
-                    <Tag
-                      color={
-                        currentSpeed
-                          ? currentSpeed > 80
-                            ? "red"
-                            : "green"
-                          : "default"
-                      }
-                    >
-                      {currentSpeed !== null
-                        ? `${currentSpeed} km/h`
-                        : "No data"}
-                    </Tag>
+      <Badge.Ribbon text={statusBadge.text} color={statusBadge.status}>
+        <Card className="shadow-lg">
+          <Row className="mb-md-4">
+            <div className="flex items-center">
+              {connectionStatus === "disconnected" && (
+                <Button
+                  type="dashed"
+                  icon={<ReloadOutlined />}
+                  size="small"
+                  onClick={handleManualReconnect}
+                  loading={reconnecting}
+                  className="mr-4"
+                  disabled={reconnecting}
+                >
+                  Reconnect
+                </Button>
+              )}
+              {connectionError && (
+                <span className="text-red-500 mr-4 text-sm">
+                  {connectionError}
+                </span>
+              )}
+              {connected && (
+                <>
+                  {currentIgnitionStatus !== null ? (
+                    currentIgnitionStatus ? (
+                      <Tag
+                        color={
+                          currentSpeed
+                            ? currentSpeed > 80
+                              ? "red"
+                              : "green"
+                            : "default"
+                        }
+                      >
+                        {currentSpeed !== null
+                          ? `${currentSpeed} km/h`
+                          : "No data"}
+                      </Tag>
+                    ) : (
+                      <Tag color="gray">Engine Off</Tag>
+                    )
                   ) : (
-                    <Tag color="gray">Engine Off</Tag>
-                  )
-                ) : (
-                  <Tag color="default">Ignition Unknown</Tag>
-                )}
-                {lastUpdated && (
-                  <Tooltip
-                    title={`Last updated: ${lastUpdated.toLocaleString()}`}
-                  >
-                    <div className="flex items-center ml-3 text-gray-500">
-                      <ClockCircleOutlined className="mr-1" />
-                      <span>{getRelativeTime()}</span>
-                    </div>
-                  </Tooltip>
-                )}
-              </>
-            )}
+                    <Tag color="default">Ignition Unknown</Tag>
+                  )}
+                  {lastUpdated && (
+                    <Tooltip
+                      title={`Last updated: ${lastUpdated.toLocaleString()}`}
+                    >
+                      <div className="flex items-center ml-3 text-gray-500 pt-md-2">
+                        <ClockCircleOutlined className="mr-1" />
+                        <span>&nbsp;{getRelativeTime()}</span>
+                      </div>
+                    </Tooltip>
+                  )}
+                </>
+              )}
+            </div>
+          </Row>
+
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold">Vehicle Identification</h3>
           </div>
-        </div>
-        <Row gutter={[24, 0]}>
-          <Col span={12}>
-            <Descriptions bordered column={1}>
-              <Descriptions.Item label="Registration Number">
-                {vehicle.registrationNumber}
-              </Descriptions.Item>
-              <Descriptions.Item label="VIN">{vehicle.vin}</Descriptions.Item>
-              <Descriptions.Item label="GPS Device ID">
-                {vehicle.gpsDeviceId}
-              </Descriptions.Item>
-            </Descriptions>
-          </Col>
-          <Col span={12}>
-            <Descriptions bordered column={1}>
-              <Descriptions.Item label="Make">{vehicle.make}</Descriptions.Item>
-              <Descriptions.Item label="Model">
-                {vehicle.vehicleModel}
-              </Descriptions.Item>
-              <Descriptions.Item label="Year">{vehicle.year}</Descriptions.Item>
-            </Descriptions>
-          </Col>
-        </Row>
+          <Row gutter={[24, 0]}>
+            <Col span={12}>
+              <Descriptions bordered column={1}>
+                <Descriptions.Item label="Registration Number">
+                  {vehicle.registrationNumber}
+                </Descriptions.Item>
+                <Descriptions.Item label="VIN">{vehicle.vin}</Descriptions.Item>
+                <Descriptions.Item label="GPS Device ID">
+                  {vehicle.gpsDeviceId}
+                </Descriptions.Item>
+              </Descriptions>
+            </Col>
+            <Col span={12}>
+              <Descriptions bordered column={1}>
+                <Descriptions.Item label="Make">
+                  {vehicle.make}
+                </Descriptions.Item>
+                <Descriptions.Item label="Model">
+                  {vehicle.vehicleModel}
+                </Descriptions.Item>
+                <Descriptions.Item label="Year">
+                  {vehicle.year}
+                </Descriptions.Item>
+              </Descriptions>
+            </Col>
+          </Row>
 
-        <Divider />
-        <h3 className="text-lg font-semibold mb-2">Vehicle Details</h3>
-        <Row gutter={[24, 0]}>
-          <Col span={12}>
-            <Descriptions bordered column={1}>
-              <Descriptions.Item label="Type">{vehicle.type}</Descriptions.Item>
-              <Descriptions.Item label="Color">
-                {vehicle.color}
-              </Descriptions.Item>
-              <Descriptions.Item label="Status">
-                {vehicle.status}
-              </Descriptions.Item>
-            </Descriptions>
-          </Col>
-          <Col span={12}>
-            <Descriptions bordered column={1}>
-              <Descriptions.Item label="Fuel Type">
-                {vehicle.fuelType}
-              </Descriptions.Item>
-              <Descriptions.Item label="Engine Capacity (CC)">
-                {vehicle.engineCapacityCC}
-              </Descriptions.Item>
-              <Descriptions.Item label="Transmission">
-                {vehicle.transmission}
-              </Descriptions.Item>
-            </Descriptions>
-          </Col>
-        </Row>
+          <Divider />
+          <h3 className="text-lg font-semibold mb-2">Vehicle Details</h3>
+          <Row gutter={[24, 0]}>
+            <Col span={12}>
+              <Descriptions bordered column={1}>
+                <Descriptions.Item label="Type">
+                  {vehicle.type}
+                </Descriptions.Item>
+                <Descriptions.Item label="Color">
+                  {vehicle.color}
+                </Descriptions.Item>
+                <Descriptions.Item label="Status">
+                  {vehicle.status}
+                </Descriptions.Item>
+              </Descriptions>
+            </Col>
+            <Col span={12}>
+              <Descriptions bordered column={1}>
+                <Descriptions.Item label="Fuel Type">
+                  {vehicle.fuelType}
+                </Descriptions.Item>
+                <Descriptions.Item label="Engine Capacity (CC)">
+                  {vehicle.engineCapacityCC}
+                </Descriptions.Item>
+                <Descriptions.Item label="Transmission">
+                  {vehicle.transmission}
+                </Descriptions.Item>
+              </Descriptions>
+            </Col>
+          </Row>
 
-        <Divider />
-        <h3 className="text-lg font-semibold mb-2">Purchase Information</h3>
-        <Row gutter={[24, 0]}>
-          <Col span={12}>
-            <Descriptions bordered column={1}>
-              <Descriptions.Item label="Purchase Date">
-                {formatDate(vehicle.purchaseDate)}
-              </Descriptions.Item>
-              <Descriptions.Item label="Current Odometer (km)">
-                {vehicle.currentOdometerKm}
-              </Descriptions.Item>
-            </Descriptions>
-          </Col>
-          <Col span={12}>
-            <Descriptions bordered column={1}>
-              <Descriptions.Item label="Purchase Price">
-                {vehicle.purchasePrice
-                  ? `$${vehicle.purchasePrice.toLocaleString()}`
-                  : "N/A"}
-              </Descriptions.Item>
-            </Descriptions>
-          </Col>
-        </Row>
+          <Divider />
+          <h3 className="text-lg font-semibold mb-2">Purchase Information</h3>
+          <Row gutter={[24, 0]}>
+            <Col span={12}>
+              <Descriptions bordered column={1}>
+                <Descriptions.Item label="Purchase Date">
+                  {formatDate(vehicle.purchaseDate)}
+                </Descriptions.Item>
+                <Descriptions.Item label="Current Odometer (km)">
+                  {vehicle.currentOdometerKm}
+                </Descriptions.Item>
+              </Descriptions>
+            </Col>
+            <Col span={12}>
+              <Descriptions bordered column={1}>
+                <Descriptions.Item label="Purchase Price">
+                  {vehicle.purchasePrice
+                    ? `$${vehicle.purchasePrice.toLocaleString()}`
+                    : "N/A"}
+                </Descriptions.Item>
+              </Descriptions>
+            </Col>
+          </Row>
 
-        <Divider />
-        <h3 className="text-lg font-semibold mb-2">Insurance Details</h3>
-        <Row gutter={[24, 0]}>
-          {/* todo: uncomment following */}
-          <Col span={12}>
-            <Descriptions bordered column={1}>
-              <Descriptions.Item label="Provider">
-                {vehicle.insurance?.provider || "N/A"}
-              </Descriptions.Item>
-              <Descriptions.Item label="Policy Number">
-                {vehicle.insurance?.policyNumber || "N/A"}
-              </Descriptions.Item>
-              <Descriptions.Item label="Coverage Type">
-                {vehicle.insurance?.coverageType || "N/A"}
-              </Descriptions.Item>
-            </Descriptions>
-          </Col>
+          <Divider />
+          <h3 className="text-lg font-semibold mb-2">Insurance Details</h3>
+          <Row gutter={[24, 0]}>
+            {/* todo: uncomment following */}
+            <Col span={12}>
+              <Descriptions bordered column={1}>
+                <Descriptions.Item label="Provider">
+                  {vehicle.insurance?.provider || "N/A"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Policy Number">
+                  {vehicle.insurance?.policyNumber || "N/A"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Coverage Type">
+                  {vehicle.insurance?.coverageType || "N/A"}
+                </Descriptions.Item>
+              </Descriptions>
+            </Col>
 
-          {/* <Col span={12}>
+            {/* <Col span={12}>
             <Descriptions bordered column={1}>
               <Descriptions.Item label="Start Date">
                 {formatDate(vehicle?.insurance?.startDate)}
@@ -492,35 +495,36 @@ const VehicleDetails: React.FC = () => {
               </Descriptions.Item>
             </Descriptions>
           </Col> */}
-        </Row>
+          </Row>
 
-        {vehicle.notes && (
-          <>
-            <Divider />
-            <h3 className="text-lg font-semibold mb-2">Notes</h3>
-            <p>{vehicle.notes}</p>
-          </>
-        )}
+          {vehicle.notes && (
+            <>
+              <Divider />
+              <h3 className="text-lg font-semibold mb-2">Notes</h3>
+              <p>{vehicle.notes}</p>
+            </>
+          )}
 
-        <Divider />
-        <h3 className="text-lg font-semibold mb-2">System Information</h3>
-        <Row gutter={[24, 0]}>
-          <Col span={12}>
-            <Descriptions bordered column={1}>
-              <Descriptions.Item label="Created At">
-                {formatDate(vehicle.createdAt)}
-              </Descriptions.Item>
-            </Descriptions>
-          </Col>
-          <Col span={12}>
-            <Descriptions bordered column={1}>
-              <Descriptions.Item label="Updated At">
-                {formatDate(vehicle.updatedAt)}
-              </Descriptions.Item>
-            </Descriptions>
-          </Col>
-        </Row>
-      </Card>
+          <Divider />
+          <h3 className="text-lg font-semibold mb-2">System Information</h3>
+          <Row gutter={[24, 0]}>
+            <Col span={12}>
+              <Descriptions bordered column={1}>
+                <Descriptions.Item label="Created At">
+                  {formatDate(vehicle.createdAt)}
+                </Descriptions.Item>
+              </Descriptions>
+            </Col>
+            <Col span={12}>
+              <Descriptions bordered column={1}>
+                <Descriptions.Item label="Updated At">
+                  {formatDate(vehicle.updatedAt)}
+                </Descriptions.Item>
+              </Descriptions>
+            </Col>
+          </Row>
+        </Card>
+      </Badge.Ribbon>
     </div>
   );
 };
