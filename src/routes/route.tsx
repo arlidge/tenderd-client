@@ -2,11 +2,11 @@ import { createBrowserRouter } from "react-router-dom";
 import { HomeOutlined, CarOutlined } from "@ant-design/icons";
 import { AppLogo } from "../components/layout/Logo";
 import MainLayout from "../components/layout/MainLayout";
-import VehicleContainer from "../components/vehicle/vehicle.container";
-import VehicleCreate from "../components/vehicle/vehicle-create";
-import VehicleDetails from "../components/vehicle/vehicle-details";
-import VehicleUpdate from "../components/vehicle/vehicle-update";
-import VehicleTable from "../components/vehicle/vehicle-table";
+import VehicleContainer from "../components/vehicle/Vehicle.container";
+import VehicleCreate from "../components/vehicle/VehicleCreate";
+import VehicleDetails from "../components/vehicle/VehicleDetails";
+import VehicleUpdate from "../components/vehicle/VehicleUpdate";
+import VehicleTable from "../components/vehicle/VehicleTable";
 
 const menuItems = [
   {

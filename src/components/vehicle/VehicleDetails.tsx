@@ -26,7 +26,7 @@ import { useGetVehicle } from "./hooks/use-get-vehicle";
 import moment from "moment";
 import { socketService } from "../../services/socket.service";
 import Header from "../layout/Header";
-import VehicleMaintenanceCreate from "./vehicle-maintenance-create";
+import VehicleMaintenanceCreate from "./VehicleMaintenanceCreate";
 
 const VehicleDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
