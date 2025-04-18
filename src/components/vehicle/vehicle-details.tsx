@@ -10,6 +10,8 @@ import {
   Tag,
   Tooltip,
   Badge,
+  Table,
+  Empty,
 } from "antd";
 import {
   ArrowLeftOutlined,
@@ -17,17 +19,19 @@ import {
   ContainerOutlined,
   ClockCircleOutlined,
   ReloadOutlined,
+  ToolOutlined,
 } from "@ant-design/icons";
 import { useParams, useNavigate } from "react-router-dom";
 import { useGetVehicle } from "./hooks/use-get-vehicle";
 import moment from "moment";
 import { socketService } from "../../services/socket.service";
 import Header from "../layout/Header";
+import VehicleMaintenanceCreate from "./vehicle-maintenance-create";
 
 const VehicleDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { vehicle, isLoading, error } = useGetVehicle(id || "");
+  const { vehicle, isLoading, error, refetch } = useGetVehicle(id || "");
   const [currentSpeed, setCurrentSpeed] = useState<number | null>(null);
   const [currentIgnitionStatus, setCurrentIgnitionStatus] = useState<
     boolean | null
@@ -38,6 +42,7 @@ const VehicleDetails: React.FC = () => {
     "connected" | "connecting" | "disconnected"
   >("connecting");
   const [reconnecting, setReconnecting] = useState(false);
+  const [maintenanceModalVisible, setMaintenanceModalVisible] = useState(false);
 
   // Use refs to track retry attempts across renders
   const retryAttemptsRef = useRef(0);
@@ -276,6 +281,90 @@ const VehicleDetails: React.FC = () => {
     }
   }, [vehicle]);
 
+  // Handle maintenance modal
+  const showMaintenanceModal = () => {
+    setMaintenanceModalVisible(true);
+  };
+
+  const hideMaintenanceModal = () => {
+    setMaintenanceModalVisible(false);
+  };
+
+  const handleMaintenanceSuccess = () => {
+    // Refetch vehicle data to show the new maintenance record
+    refetch();
+  };
+
+  // Maintenance columns for the table
+  const maintenanceColumns = [
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      render: (date: string) => formatDate(date),
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
+      render: (type: string) => (
+        <Tag
+          color={
+            type === "scheduled"
+              ? "blue"
+              : type === "preventive"
+                ? "green"
+                : type === "corrective"
+                  ? "orange"
+                  : type === "inspection"
+                    ? "cyan"
+                    : "default"
+          }
+        >
+          {type.charAt(0).toUpperCase() + type.slice(1)}
+        </Tag>
+      ),
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status: string) => (
+        <Tag
+          color={
+            status === "pending"
+              ? "gold"
+              : status === "in_progress"
+                ? "blue"
+                : status === "completed"
+                  ? "green"
+                  : "red"
+          }
+        >
+          {status.replace("_", " ").charAt(0).toUpperCase() +
+            status.replace("_", " ").slice(1)}
+        </Tag>
+      ),
+    },
+    {
+      title: "Cost",
+      dataIndex: "cost",
+      key: "cost",
+      render: (cost: number) => (cost ? `$${cost.toLocaleString()}` : "N/A"),
+    },
+    {
+      title: "Odometer",
+      dataIndex: "odometerReadingKm",
+      key: "odometerReadingKm",
+      render: (km: number) => (km ? `${km.toLocaleString()} km` : "N/A"),
+    },
+  ];
+
   if (!id) return <div>Error: No vehicle ID provided</div>;
 
   if (isLoading) return <Spin size="large" />;
@@ -309,11 +398,17 @@ const VehicleDetails: React.FC = () => {
             Back to List
           </Button>
           <Button
-            type="primary"
             icon={<EditOutlined />}
             onClick={() => navigate(`/vehicles/${id}/update`)}
           >
             Edit Vehicle
+          </Button>
+          <Button
+            type="primary"
+            icon={<ToolOutlined />}
+            onClick={showMaintenanceModal}
+          >
+            Add Maintenance
           </Button>
         </div>
       </div>
@@ -480,20 +575,6 @@ const VehicleDetails: React.FC = () => {
                 </Descriptions.Item>
               </Descriptions>
             </Col>
-
-            {/* <Col span={12}>
-            <Descriptions bordered column={1}>
-              <Descriptions.Item label="Start Date">
-                {formatDate(vehicle?.insurance?.startDate)}
-              </Descriptions.Item>
-              <Descriptions.Item label="End Date">
-                {formatDate(vehicle?.insurance?.endDate)}
-              </Descriptions.Item>
-              <Descriptions.Item label="Premium">
-                ${vehicle?.insurance?.premium?.toLocaleString()}
-              </Descriptions.Item>
-            </Descriptions>
-          </Col> */}
           </Row>
 
           {vehicle.notes && (
@@ -502,6 +583,34 @@ const VehicleDetails: React.FC = () => {
               <h3 className="text-lg font-semibold mb-2">Notes</h3>
               <p>{vehicle.notes}</p>
             </>
+          )}
+
+          {/* Add maintenance records section before the system information */}
+          <Divider />
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <h3 className="mb-0">Maintenance Records</h3>
+            <Button
+              type="primary"
+              icon={<ToolOutlined />}
+              onClick={showMaintenanceModal}
+            >
+              Add Maintenance
+            </Button>
+          </div>
+
+          {vehicle.maintenanceHistory &&
+          vehicle.maintenanceHistory.length > 0 ? (
+            <Table
+              dataSource={vehicle.maintenanceHistory.map((record) => ({
+                ...record,
+                key: record.id,
+              }))}
+              columns={maintenanceColumns}
+              pagination={false}
+              className="mb-4"
+            />
+          ) : (
+            <Empty description="No maintenance records found" />
           )}
 
           <Divider />
@@ -524,6 +633,16 @@ const VehicleDetails: React.FC = () => {
           </Row>
         </Card>
       </Badge.Ribbon>
+
+      {/* Maintenance Create Modal */}
+      {id && (
+        <VehicleMaintenanceCreate
+          visible={maintenanceModalVisible}
+          onClose={hideMaintenanceModal}
+          vehicleId={id}
+          onSuccess={handleMaintenanceSuccess}
+        />
+      )}
     </div>
   );
 };

@@ -25,6 +25,31 @@ interface Insurance {
   premium?: number;
 }
 
+type MaintenanceType =
+  | "scheduled"
+  | "unscheduled"
+  | "preventive"
+  | "corrective"
+  | "inspection"
+  | "other";
+
+type MaintenanceStatus = "pending" | "in_progress" | "completed" | "cancelled";
+
+interface Maintenance {
+  id: string;
+  vehicleId: string; // Reference to the Vehicle model
+  date: Date;
+  type: MaintenanceType;
+  description: string;
+  cost?: number;
+  odometerReadingKm?: number;
+  status: MaintenanceStatus;
+  notes?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  isDeleted: boolean;
+}
+
 interface Vehicle {
   id: string;
   registrationNumber: string;
@@ -45,6 +70,7 @@ interface Vehicle {
   purchasePrice?: number;
   lastMaintenanceDate?: Date;
   nextMaintenanceDate?: Date;
+  maintenanceHistory?: Maintenance[];
   insurance?: Insurance;
   gpsDeviceId?: string;
   currentLocation?: GeoPoint;
@@ -80,4 +106,28 @@ interface VehicleCreatePayload {
   age?: number;
 }
 
-export type { VehicleCreatePayload, Vehicle };
+interface MaintenanceCreateData {
+  vehicleId: string;
+  date: Date;
+  type:
+    | "scheduled"
+    | "unscheduled"
+    | "preventive"
+    | "corrective"
+    | "inspection"
+    | "other";
+  description: string;
+  cost?: number;
+  odometerReadingKm?: number;
+  status: "pending" | "in_progress" | "completed" | "cancelled";
+  notes?: string;
+}
+
+export type {
+  VehicleCreatePayload,
+  Vehicle,
+  MaintenanceCreateData,
+  MaintenanceStatus,
+  MaintenanceType,
+  Maintenance,
+};
