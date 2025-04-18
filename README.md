@@ -1,6 +1,14 @@
 # Tenderd Client App
 Real time react app 
 
+## Requirement
+1. Node 22 or above
+2. yarn
+
+## Running locally
+1. Run `yarn install`
+2. Run `yarn start`
+
 ### Features
 1. Route level state management (using react-query)
 2. Real-time vehicle details & analytics
@@ -10,9 +18,10 @@ Real time react app
 6. Skipped authentication
 7. Vehicle Management
 8. Vehicle Management (Only Create and Read for demo purpose)
-9. Skipped Vehicle Update for sake of demo (APIs are ready to be used)
-10. Skipped i18n for sake of demo
-11. Skipped detailed styling including responsivness for sake of demo
+9. Typed, lint and prettier
+10. Skipped Vehicle Update for sake of demo (APIs are ready to be used)
+11. Skipped i18n for sake of demo
+12. Skipped detailed styling including responsivness for sake of demo
 
 ## Screenshots
 ### Vehicle List
