@@ -561,7 +561,6 @@ const VehicleDetails: React.FC = () => {
           <Divider />
           <h3 className="text-lg font-semibold mb-2">Insurance Details</h3>
           <Row gutter={[24, 0]}>
-            {/* todo: uncomment following */}
             <Col span={12}>
               <Descriptions bordered column={1}>
                 <Descriptions.Item label="Provider">

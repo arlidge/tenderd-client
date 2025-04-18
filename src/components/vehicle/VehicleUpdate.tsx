@@ -7,7 +7,6 @@ const VehicleUpdate: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  // TODO: Create hooks to fetch vehicle details and update vehicle
   const isLoading = false;
   const vehicle = null;
   const error = null;
