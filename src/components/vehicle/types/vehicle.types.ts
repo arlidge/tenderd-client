@@ -28,25 +28,31 @@ interface Insurance {
 interface Vehicle {
   id: string;
   registrationNumber: string;
+  isIgnitionOn: boolean;
   vin: string;
   make: string;
   vehicleModel: string;
   year: number;
-  type: string;
-  color: string;
-  fuelType: string;
-  engineCapacityCC: number;
-  transmission: string;
-  status: string;
+  type: VehicleType;
+  color?: string;
+  fuelType: FuelType;
+  engineCapacityCC?: number;
+  transmission?: TransmissionType;
+  status: VehicleStatus;
   currentOdometerKm: number;
-  purchaseDate: string;
-  purchasePrice: number;
-  insurance: Insurance;
-  gpsDeviceId: string;
-  currentLocation: GeoPoint;
-  notes: string;
-  createdAt: string;
-  updatedAt: string;
+  fuelEfficiencyKm?: number;
+  purchaseDate?: Date;
+  purchasePrice?: number;
+  lastMaintenanceDate?: Date;
+  nextMaintenanceDate?: Date;
+  insurance?: Insurance;
+  gpsDeviceId?: string;
+  currentLocation?: GeoPoint;
+  notes?: string;
+  speedKm: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  age?: number;
 }
 
 interface VehicleCreatePayload {
