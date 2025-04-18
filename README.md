@@ -15,13 +15,14 @@ Real time react app
 3. Error Boundary
 4. Flexible Layout
 5. Retry logic with exponential backoff
-6. Skipped authentication
-7. Vehicle Management
-8. Vehicle Management (Only Create and Read for demo purpose)
-9. Typed, lint and prettier
-10. Skipped Vehicle Update for sake of demo (APIs are ready to be used)
-11. Skipped i18n for sake of demo
-12. Skipped detailed styling including responsivness for sake of demo
+6. Reusable components
+7. Skipped authentication
+8. Vehicle Management
+9. Vehicle Management (Only Create and Read for demo purpose)
+10. Typed, lint and prettier
+11. Skipped Vehicle Update for sake of demo (APIs are ready to be used)
+12. Skipped i18n for sake of demo
+13. Skipped detailed styling including responsivness for sake of demo
 
 ## Screenshots
 ### Vehicle List
